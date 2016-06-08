@@ -1,3 +1,4 @@
+library(igraph)
 
 plot_network <- function(table){
   
@@ -40,7 +41,8 @@ plot_network <- function(table){
   net$layout <- layout_with_fr(net)
   
   # == plot network model == #
-  # netgraph <- plot.igraph(net, layout = co, rescale = FALSE, xlim = range(co[,1]), ylim = range(co[,2]), margin = -0.25)
+  # netgraph <- plot.igraph(net, layout = co, rescale = FALSE,
+  # xlim = range(co[,1]), ylim = range(co[,2]), margin = -0.25)
   return(net)
 }
 #eos

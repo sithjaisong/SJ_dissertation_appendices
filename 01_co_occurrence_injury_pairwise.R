@@ -6,10 +6,10 @@ cooc_table <- function(temp){
   
   for (b in 1:(length(names(temp)) - 1)) {
     
-    # every species will be compared to every other species, so there has
+    # every variable will be compared to every other variable, so there has
     # to be another loop that iterates down the rest of the columns
     
-    for (c in (b + 1):length(names(temp))){
+    for (c in (b + 1):length(names(temp))) {
       
       # summing the abundances of species of the columns that will be
       # compared
@@ -20,9 +20,10 @@ cooc_table <- function(temp){
       
       # if the column is all 0's no co-occurrence will be performed
       
-      if (var1.sum > 1 & var2.sum > 1){
+      if (var1.sum > 1 & var2.sum > 1) {
         
-        test <- cor.test(temp[, b], temp[, c], method = "spearman",  na.action = na.rm, exact = FALSE)
+        test <- cor.test(temp[, b], temp[, c], method = "spearman",
+                         na.action = "na.exclude", exact = FALSE)
         
         # There are warnings when setting exact = TRUE because of ties from the
         # output of Spearman's correlation
@@ -41,7 +42,8 @@ cooc_table <- function(temp){
         p.value <- 1
       }
       
-      new.row <- c(names(temp)[b], names(temp)[c], rho, p.value, var1.sum, var2.sum)
+      new.row <- c(names(temp)[b], names(temp)[c], rho, p.value, var1.sum,
+                   var2.sum)
       
       results <- rbind(results, new.row)
       
@@ -49,7 +51,7 @@ cooc_table <- function(temp){
     
   }
   # change the class
-  results <- as.data.frame(results) 
+  results <- as.data.frame(results)
   
   row.names(results) <- NULL
   
@@ -60,7 +62,8 @@ cooc_table <- function(temp){
   results$p.value <- as.numeric(as.character(results$p.value))
   
   # reorder the column names following this
-  results <- results[c("var1", "var2", "rho", "p.value", "var1.sum", "var2.sum")] 
+  results <- results[c("var1", "var2", "rho", "p.value", "var1.sum",
+                       "var2.sum")]
   
   return(results)
 }

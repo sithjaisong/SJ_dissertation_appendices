@@ -1,3 +1,5 @@
+library(RColorBrewer)
+
 cluster.network <- function(graph){
   
   node <- as.character(V(graph)$name)
