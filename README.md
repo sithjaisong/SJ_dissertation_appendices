@@ -13,9 +13,12 @@ B. R Scripts used to run co-occurrence analysis and network construction
 
 In order to construt the networks in this study, I have three functions following:
 
-1.compute correlation coefficient all pair of variables
-2.contructing network from step1
-3.detact communities from step2
+1. compute correlation coefficient all pair of variables
+
+2. contructing network from step1
+
+3. detact communities from step2
+
 
 I also have 1 function to visulize node properties of resulted network to determine the functions of nodes has in a networks.
 
