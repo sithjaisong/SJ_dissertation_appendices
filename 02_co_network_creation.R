@@ -1,11 +1,11 @@
 ########################################################################
-# title         : 01_co_occurrence-injury_pairwise.R
-# purpose       : compute correlation coefficient
+# title         : 02_co_network_creation.R;
+# purpose       : constructing a network model;
 # producer      : prepared by S. Jaisong (s.jaisong@irri.org);
-# last update   : in Los Baños, Laguna, PHL, Jan 2015;
-# inputs        : output as the dataframe from 01_co_occurrence_injury_pairwise.R 
-# outputs       : data frame with pair of variable with correlation coefficient 
-# remarks 1     : this function can be modified based on your correaltion method
+# last update   : in Los Baños, Laguna, PHL, Jan 2016;
+# inputs        : output as the dataframe from 02_co_occurrence_injury_pairwise.R; 
+# outputs       : igraph objects; 
+# remarks 1     : 
 ######################################################################
 
 library(igraph)
@@ -26,7 +26,7 @@ plot_network <- function(data){
   # set shape of node
   V(net)$shape <- "circle"
   
-  # set size of node. 25 is suitable for showing grap on A4 paper
+  # set node size at 25 is suitable for showing grap on A4 paper
   V(net)$size <- 25
   
   V(net)$label.color <- "black"
