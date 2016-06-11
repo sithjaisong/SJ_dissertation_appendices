@@ -1,11 +1,11 @@
 ########################################################################
-# title         : 01_co_occurrence_injury_pairwise.R
+# title         : 02_co_occurrence_injury_pairwise.R
 # purpose       : compute correlation coefficient
 # producer      : prepared by S. Jaisong (s.jaisong@irri.org);
-# last update   : in Los Baños, Laguna, PHL, Jan 2015;
+# last update   : in Los Baños, Laguna, PHL, Jan 2016;
 # inputs        : dataframe containing varible conlumns with numeric data
-# outputs       : data frame with pair of variable with correlation coefficient 
-# remarks 1     : this function can be modified based on your correaltion method
+# outputs       : dataframe with pairs of variables with correlation coefficients 
+# remarks 1     : this function can be modified based on selected correlation method
 ######################################################################
 
 
