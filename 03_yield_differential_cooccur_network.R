@@ -1,10 +1,10 @@
 ########################################################################
-# title         : 03_differntial_yield_network.R
-# purpose       : find the differences in the network
+# title         : 03_yield_differential_cooccur_network.R;
+# purpose       : find the differences of network model in different yield levels;
 # producer      : prepared by S. Jaisong (s.jaisong@irri.org);
 # last update   : in Los Baños, Laguna, PHL, Jun 2016;
-# inputs        : output as igraph object from 02_co_network_creation.R 
-# outputs       : can modified based on cluster algorith
+# inputs        : output as igraph object from 02_co_network_creation.R ;
+# outputs       : 
 ######################################################################
 
 
@@ -33,8 +33,8 @@
  # compare correlation coefficient of each pair of injuries of conditionA and 
  # condition B
 
- # call dfiff.corr function from 02_co_network_creation.R #
-
+ # call dfiff.corr
+ source("https://raw.githubusercontent.com/sithjaisong/network/master/function_dffi.cor.R")
  diff_comb <- diff.corr(adj.mat1 , adj.mat2)
 
  # set the index that 
@@ -59,9 +59,9 @@
   gdif$layout <- layout_with_fr(gdif)
   E(gdif)[weight > 0]$color <- adjustcolor("grey60" , alpha.f = .8)
   
-  # this network will be considered paris that higher significantly present at 
-  # low yield level because we assume that injury that highly present in low may
-  # cause yield loss
+  # this network will be considered injury pairs that significantly higher present at 
+  # low yield level because we assume that injury pairs that have strong asscociation 
+  # in low yield level may contribute significant yield losses
   
   gdif <- delete.edges(gdif, which(E(gdif)$weight < 0))
 
