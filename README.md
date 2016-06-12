@@ -11,7 +11,7 @@ R Scripts used to run co-occurrence analysis and network construction
 
 In order to construct the networks in this study, I used the following methods:
 
-1. compute correlation coefficient of all pairs of variables,
+1. compute correlation coefficients of all pairs of variables,
 
 2. construct network from step 1, and
 
