@@ -1,10 +1,10 @@
 # network
 This repository contains R-scripts used in the dissertation of Mr. Sith Jaisong, IRRI scholar and University of the Philippines Los Baños (UPLB) student, for the analyzing crop health survey data using network analysis.
 
-R Scripts used to run to compare correlation coefficients from each correlation methods
+R Scripts used to run to compare correlation coefficients from each correlation method
 ===
 
-The script named [01_compare_cor_coef.R](https://github.com/sithjaisong/network/blob/master/01_compare_cor_coef.R) is assigned to perform similarity test of the correlation coefficients from each method and cluster analysis using Euclidean distance. This script also is included to the method to find injury pairs that are significantly related at different thresholds (*p*-value > 0.05, < 0.05, and < 0.01) resulting from four correlation methods.
+The script named [01_compare_cor_coef.R](https://github.com/sithjaisong/network/blob/master/01_compare_cor_coef.R) is assigned to perform similarity test of the correlation coefficients from each method and cluster analysis using Euclidean distance. This script also is included the method to find injury pairs that are significantly related at different thresholds (*p*-value > 0.05, < 0.05, and < 0.01) resulting from four correlation methods.
 
 R Scripts used to run co-occurrence analysis and network construction
 ===
