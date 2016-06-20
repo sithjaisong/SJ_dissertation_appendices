@@ -20,6 +20,8 @@ needed to compute correaltion coefficient using the function named `cooc_table`
 from Appendix B first. Then, the output from each data set will be able to
 compare the differences using the `diff_cor` function.
 
+**It is required to run Appendix B prior to this Appendix.**
+
 # Libraries
 ```{R libraries, eval=FALSE}
 if (!require("DiffCorr")) {

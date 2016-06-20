@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # B. R Scripts used to run co-occurrence analysis and network construction
-In order to construt the networks in this study, there are three functions:
+In order to construct the networks in this study, there are three functions:
 
 1. compute correlation coefficient all pair of variables,
 
