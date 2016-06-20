@@ -1,0 +1,244 @@
+---
+title: ""
+output:
+  word_document:
+    reference_docx: Sith_Dissertation_Style.docx
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# C. Run differential network analysis in different seasons
+
+In this appendix, the network correlation coefficients are visualized. Before
+performing this function, two data sets from different conditions should be
+selected to compare and construct a differerential network. Each data set is
+needed to compute correaltion coefficient using the function named `cooc_table`
+from Appendix B first. Then, the output from each data set will be able to
+compare the differences using the `diff_cor` function.
+
+# Libraries
+```{R libraries, eval=FALSE}
+if (!require("DiffCorr")) {
+  install.packages("DiffCorr", dependencies = TRUE)
+}
+
+if (!require("igraph")) {
+  install.packages("igraph", dependencies = TRUE)
+}
+```
+
+# Differential season network
+```{r differential_season_network, eval=FALSE}
+# df_dry is the dataframe selected in dry season
+# df_wet is the datafeam selected in wet season
+
+# call function cooc_table defined in Appedix B
+
+cor_dry <- cooc_table(df_dry) # dry season
+cor_wet <- cooc_table(df_wet) # wet season
+
+pair.list <- cor_dry
+# = Dry season
+cor_dry$rho[cor_dry$p.value > 0.05 ] <- 0
+g1 <- graph.edgelist(as.matrix(cor_dry[1:2]), directed = FALSE)
+
+# = Wet season
+cor_wet2$rho[cor_df$p.value > 0.05 ] <- 0
+g2 <- graph.edgelist(as.matrix(df_wet[1:2]), directed = FALSE)
+
+
+# = Differential network
+# g1 is network graph of dry season (condition1)
+# g2 is network graph of wet season (condition2)
+
+# create adjagency matrix from igraph object
+adj.mat1 <- as.matrix(as_adjacency_matrix(g1, attr = "weight")) # dry season
+
+adj.mat2 <- as.matrix(as_adjacency_matrix(g2, attr = "weight")) # wet season
+
+
+# compare correlation coefficient of each pair of injuries of conditionA and 
+# condition B
+
+# call dfiff.corr function from 02_co_network_creation.R #
+
+diff_comb <- diff.corr(adj.mat1 , adj.mat2)
+
+# set the index that 
+# if correlation coefficents of condiction A higher than B index value is positive
+# if correlation coefficents of condiction A less than B index value is negative
+diff_comb$index <- ifelse(abs(diff_comb$r1) - abs(diff_comb$r2) > 0, 1, -1)
+
+# create differtial network in seasons
+
+gdif <- graph.edgelist(as.matrix(diff_comb[1:2]), directed = FALSE)
+
+E(gdif)$weight <- as.matrix(diff_comb$index)
+
+V(gdif)$color <- adjustcolor("khaki2", alpha.f = .8)
+V(gdif)$frame.color <- adjustcolor("khaki2", alpha.f = .8)
+V(gdif)$shape <- "circle"
+V(gdif)$size <- 25
+V(gdif)$label.color <- "black"
+V(gdif)$label.font <- 2
+V(gdif)$label.family <- "Helvetica"
+V(gdif)$label.cex <- 1.0
+gdif$layout <- layout_with_fr(gdif)
+
+# label edges following the result from comparison
+# Dry season - Wet season 
+# Dry > Wet > 0 ; labeled with organred4 color
+# Dry < Wet < 0 ; labeled with royelblue4 color
+E(gdif)[weight > 0]$color <- adjustcolor("orangered4" , alpha.f = .8)
+E(gdif)[weight < 0]$color <- adjustcolor("royalblue4", alpha.f = .8)
+```
+
+
+# Using diff.corr function to compare differences in networks
+
+This function perform sFisher’s *z*-test on the dataset from two different
+conditions. The output is data frame with a column for the dataset label, each
+injury pair, the correlation coefficient at condition A, *p*-value in the pair
+at condition A, the correlation coefficient at condition B, *p*-value in the
+pair at condition B, *p*-value of difference in the pair, and difference of two
+correlation coefficients. The result will be used for constructing differential
+network model with all edges in the network with differential co-occurrence
+significant at *p*-values < 0.05, and labelled edges by color to identify the
+condition that edges are represented; red edges represent differential
+relationship in dry season, and blue edges represented differential relationship
+in wet season.
+
+```{r diff_cor, eval=FALSE}
+diff.corr   <- function(data1, data2){
+  
+  ccc1 <- as.vector(data1[lower.tri(data1)])
+  
+  ccc2 <- as.vector(data2[lower.tri(data2)])
+  
+  n <- nrow(data1)
+  
+  N <- n * (n - 1)/2
+  
+  p1 <- rep(1, N)
+  
+  p2 <- rep(1, N)
+  
+  pdiff <- rep(1, N)
+  
+  diff <- rep(1, N)
+  
+  mol.names <- rownames(data1)
+  
+  p1 <- cor2.test(n1, ccc1)
+  
+  p2 <- cor2.test(n2, ccc2)
+  
+  pdiff <- compcorr(n1, ccc1, n2, ccc2)$pval
+  diff <- ccc1 - ccc2
+  
+  pdiff[(is.na(pdiff)) == TRUE] <- 1
+  
+  myindex <- which((lower.tri(data1)) == TRUE, arr.ind = TRUE)
+  
+  mol.names1 <- mol.names[myindex[, 1]]
+  
+  mol.names2 <- mol.names[myindex[, 2]]
+  
+  fin.ind <- pdiff < 0.05
+  
+  # combine data
+  res <- cbind(mol.names1[fin.ind], mol.names2[fin.ind], ccc1[fin.ind], p1[fin.ind], ccc2[fin.ind], p2[fin.ind], pdiff[fin.ind], diff[fin.ind])
+  
+  # correct format the data structure
+  res <- as.data.frame(res)
+  
+  # name column
+  names(res) <- c("var1", "var2", "r1", "p1", "r2", "p2", "p.difference", "difr")
+  # set class of each variable
+  res$var1 <- as.character(res$var1)
+  res$var2 <- as.character(res$var2)
+  res$r1 <- as.numeric(as.character(res$r1))
+  res$p1 <- as.numeric(as.character(res$p1))
+  res$r2 <- as.numeric(as.character(res$r2))
+  res$p2  <- as.numeric(as.character(res$p2))
+  res$p.difference <- as.numeric(as.character(res$p.difference))
+  res$difr <- as.numeric(as.character(res$difr))
+  
+  return(res)
+}
+```
+
+
+# Visualising differential networks
+The last step visualises the differential netowrk analysis results. Correlation
+coeffecients of two data sets (low yield data set and high yield data) are
+computed using the function named `cooc_table` from Appendix B, first. Then, the
+output from each data set will compared for differences using the `diff_cor`
+function. The result is used for constructing differential network models with
+all edges in the network with differential co-occurrence significant at 
+*p*-values < 0.05, and select edges that are higher significantly co-occurrences
+at lower yield levels.
+
+```{r differential_yield_network, eval=FALSE}
+cor_low <- cooc_table(df_low) # low yield level
+cor_high <- cooc_table(df_high) # high yield level
+
+# = low yield data
+cor_low$rho[cor_dry$p.value > 0.05 ] <- 0
+g1 <- graph.edgelist(as.matrix(cor_low[1:2]), directed = FALSE)
+E(g1)$weight <- cor_low$rho
+
+# = high yield data
+cor_high$rho[cor_df$p.value > 0.05 ] <- 0
+g2 <- graph.edgelist(as.matrix(df_high[1:2]), directed = FALSE)
+E(g2)$weight <- cor_high$rho
+
+# = Differential network
+# g1 is network graph of low yield  (condition1)
+# g2 is network graph of high yield (condition2)
+
+# create adjagency matrix from igraph object
+adj.mat1 <- as.matrix(as_adjacency_matrix(g1, attr = "weight")) # low yield
+
+adj.mat2 <- as.matrix(as_adjacency_matrix(g2, attr = "weight")) # high yield
+
+# compare correlation coefficient of each pair of injuries of conditionA and 
+# condition B
+
+# call dfiff.corr function from 02_co_network_creation.R #
+
+diff_comb <- diff.corr(adj.mat1 , adj.mat2)
+
+# set the index that 
+# if correlation coefficents of condition A higher than B index value is positive
+# if correlation coefficents of condition A less than B index value is negative
+diff_comb$index <- ifelse(abs(diff_comb$r1) - abs(diff_comb$r2) > 0, 1, -1)
+
+# create differtial network in yield levels
+
+gdif <- graph.edgelist(as.matrix(diff_comb[1:2]), directed = FALSE)
+
+E(gdif)$weight <- as.matrix(diff_comb$index)
+
+V(gdif)$color <- adjustcolor("khaki2", alpha.f = .8)
+V(gdif)$frame.color <- adjustcolor("khaki2", alpha.f = .8)
+V(gdif)$shape <- "circle"
+V(gdif)$size <- 25
+V(gdif)$label.color <- "black"
+V(gdif)$label.font <- 2
+V(gdif)$label.family <- "Helvetica"
+V(gdif)$label.cex <- 1.0
+gdif$layout <- layout_with_fr(gdif)
+E(gdif)[weight > 0]$color <- adjustcolor("grey60" , alpha.f = .8)
+
+# this network will be considered pairs that higher significantly present at 
+# low yield level because we assume that injury that highly present in low may
+# cause yield loss
+
+gdif <- delete.edges(gdif, which(E(gdif)$weight < 0))
+```
+
