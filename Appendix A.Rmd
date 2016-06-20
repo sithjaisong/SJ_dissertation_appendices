@@ -1,0 +1,91 @@
+---
+title: "APPENDICES"
+output:
+  word_document:
+    reference_docx: Sith_Dissertation_Style.docx
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A. R script used to run co-occurence analysis and network construction
+
+This script counts number of pairs that significantly are related at different
+threshold values (*p*-value > 0.05, < 0.05, and < 0.01).
+
+## Libraries
+
+```{r libraries, eval=FALSE}
+
+if (!require("WGCNA")) {
+  install.packages("WGCNA", dependencies = TRUE)
+}
+
+if(!require("apcluster")) {
+  install.packages("apcluster", dependencies = TRUE)
+}
+
+if(!require("pheatmap")) {
+  install.packages("pheatmap", dependencies = TRUE)
+}
+
+if (!require("dplyr")) {
+  install.packages("dplyr", dependencies = TRUE)
+}
+
+
+```
+
+# Comparison of correlation methods
+
+
+```{r correlation comparison, eval=FALSE}
+
+# data is an data frame 
+
+# spearman correlation
+cor.spearman <- cor(data, method = "spearman", use = "pairwise")
+
+# kendall correlation
+cor.kendall <- cor(data, method = "kendall", use = "pairwise") 
+
+# names the object
+names(cor.spearman) <- "Spearman"
+names(cor.kendall) <- "Kendall"
+
+
+# ############################
+# flattenCorrMatrix
+# ###########################
+# reference: http://www.sthda.com/english/wiki/print.php?id=78
+# cormat : matrix of the correlation coefficients
+# pmat : matrix of the correlation p-values
+
+flattenCorrMatrix <- function(cormat, pmat) {
+  ut <- upper.tri(cormat)
+  data.frame(
+    row = rownames(cormat)[row(cormat)[ut]],
+    column = rownames(cormat)[col(cormat)[ut]],
+    cor  =(cormat)[ut],
+    p = pmat[ut]
+  )
+}
+
+# counting the number of pairs that are significantly related
+
+cor.spearman <- rcorr(as.matrix(data), type = "spearman")
+cor.spearman <- flattenCorrMatrix(cor.spearman$r, cor.spearman$P)
+cor.spearman %>% filter(p > 0.05) %>% nrow()
+cor.spearman %>% filter(p < 0.05) %>% nrow()
+cor.spearman %>% filter(p < 0.01) %>% nrow()
+
+cor.kendall <- rcorr(as.matrix(data), type = "kendall")
+cor.kendall <- flattenCorrMatrix(cor.kendall$r, cor.kendall$P)
+cor.kendall %>% filter(p > 0.05) %>% nrow()
+cor.kendall %>% filter(p < 0.05) %>% nrow()
+cor.kendall %>% filter(p < 0.01) %>% nrow()
+
+```

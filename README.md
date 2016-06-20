@@ -1,4 +1,5 @@
 # network
+<<<<<<< HEAD
 This repository contains R-scripts used in the dissertation of Mr. Sith Jaisong, IRRI scholar and University of the Philippines Los Baños (UPLB) student, for the analyzing crop health survey data using network analysis.
 
 R Scripts used to run to compare correlation coefficients from each correlation method
@@ -36,3 +37,12 @@ These scripts are named [03_season_differential_cooccur_network.R](https://githu
 '[function_diff_cor.R](https://github.com/sithjaisong/network/blob/master/03_differial_season_network.R)' is assigned to perform a Fisher’s *z*- test of data sets from two different conditions. The output is data frame with a column for the dataset label, each injury pair, the correlation coefficient at condition A, *p*-value in the pair at condition A, the correlation coefficient at condition B, *p*-value in the pair at condition B, *p*-value of difference in the pair, and difference of two correlation coefficients. The result will be used for constructing differential network model with all edges in the network with differential co-occurrence significant at *p*-values < 0.05, and label edges by color to identify the condition that edges are represented; red edges represent differential relationship in dry season, and blue edges represented differential relationships in wet season.
 
 These scripts are named [03_yield_differential_cooccur_network.R](https://github.com/sithjaisong/network/blob/master/03_yield_differential_cooccur_network.R). These scripts are assigned to process from correlation coefficients computation to differential network visualization. Two different data sets (survey data at low yield level and high yield level) are computed correlation coefficients by function named [02_co_occurrence_injury_pairwise.R](https://github.com/sithjaisong/network/blob/master/02_co_occurrence_injury_pairwise.R). Then, the output from each data set will be compared the differences using '[function_diff_cor.R](https://github.com/sithjaisong/network/blob/master/function_dffi.cor.R)'. The result will be used for constructing a differential network model with all edges in the network having differential co-occurrence significant at *p*-values < 0.05, and select the edges that significantly co-occurrences at lower yield level.
+=======
+This repository contains R-scripts used in the dissertation of Mr Sith Jaisong,
+IRRI scholar and University of the Philippines, Los Baños (UPLB) student for
+the analyses of crop health survey data using network analysis.
+
+All scripts used in this analysis can be found at the following website:
+https://github.com/sithjaisong/network. These scripts are written to be used
+in R.
+>>>>>>> pr/16
