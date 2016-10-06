@@ -102,7 +102,7 @@ E(gdif)[weight < 0]$color <- adjustcolor("royalblue4", alpha.f = .8)
 
 # Using diff.corr function to compare differences in networks
 
-This function perform sFisher’s *z*-test on the dataset from two different
+This function performs Fisher’s *z*-test on the dataset from two different
 conditions. The output is data frame with a column for the dataset label, each
 injury pair, the correlation coefficient at condition A, *p*-value in the pair
 at condition A, the correlation coefficient at condition B, *p*-value in the
