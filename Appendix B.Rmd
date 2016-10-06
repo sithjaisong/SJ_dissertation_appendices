@@ -16,7 +16,7 @@ In order to construct the networks in this study, there are three functions:
 
 1. compute correlation coefficient all pair of variables,
 
-2. contruct network from step1,
+2. construct network from step1,
 
 3. detect communities from step2.
 
